@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback } from "../../ui/avatar";
 import { useState } from "react";
 import { Label } from "../../ui/label";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "@/features/slices/authSlice";
+import { logoutUser } from "@/redux/slices/authSlice";
 
 const menuItems = [
   { id: "home", label: "Home", path: "/user/dashboard" },
