@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { AlignJustify, LogOut, Home, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { logoutUser } from "@/features/slices/authSlice";
+import { logoutUser } from "@/redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
