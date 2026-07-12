@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Route, Routes } from "react-router-dom";
-import AuthLayout from "./components/auth/auth-layout";
-import AdminLayout from "./components/adminView/admin-layout";
-import UserLayout from "./components/customerView/customer-layout";
+import AuthLayout from "./components/auth/auth-layout.jsx";
+import AdminLayout from "./components/adminView/admin-layout.jsx";
+import UserLayout from "./components/customerView/customer-layout.jsx";
 import CheckAuth from "./components/common/check-auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
