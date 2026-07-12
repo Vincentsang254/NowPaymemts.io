@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
-import AdminHeader from "./header";
-import AdminSideBar from "./sidebar";
+import AdminHeader from "./admin-header";
+import AdminSideBar from "./admin-sidebar";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 
