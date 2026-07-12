@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { logoutUser } from "@/features/slices/authSlice";
+import { logoutUser } from "@/redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 
 const adminSidebarMenuItems = [
