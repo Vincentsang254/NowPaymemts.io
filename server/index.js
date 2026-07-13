@@ -50,8 +50,8 @@ app.use((err, req, res, next) => {
    // for v5 use the following code
     app.get(/.*/, (req, res) => {
         res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
-        });
-    })
+    });
+
   }
 
 const startServer = async () => {
