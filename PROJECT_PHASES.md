@@ -12,7 +12,7 @@
 
 Status
 
-🟡 In Progress
+� Completed
 ---
 
 ## Phase 2
@@ -30,7 +30,7 @@ Tasks
 
 Status
 
-� Partially completed
+🟡 In Progress
 
 Completed
 
