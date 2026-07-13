@@ -25,5 +25,6 @@ Created Login Page
 - Implemented auth controller endpoints for register, login, load user, and logout.
 - Added auth and user routes and registered them in the server bootstrap.
 - Fixed the payment routes to use the existing authentication middleware.
-- Fixed production SPA catch-all route compatibility with Express 5 by using `/*` instead of `*`.
+- Fixed the production wildcard route crash by restoring a compatible Express route pattern and patching the runtime path parser used by the server.
+- Verified the server now gets past the route parsing error; remaining deployment issues are tied to the external MySQL credentials.
 - Added a health endpoint and basic error handling middleware for backend startup stability.
