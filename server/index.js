@@ -44,9 +44,14 @@ app.use((err, req, res, next) => {
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/dist")));
 
-    app.use("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
-    });
+    //app.use("*", (req, res) => {
+    //  res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
+   // }); // this is for express v4
+   // for v5 use the following code
+    app.get(/.*/, (req, res) => {
+        res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
+        });
+    })
   }
 
 const startServer = async () => {
