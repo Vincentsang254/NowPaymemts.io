@@ -117,9 +117,7 @@ module.exports = (sequelize) => {
         {
           fields: ["transactionId"],
         },
-        {
-          fields: ["orderId"],
-        },
+        
         {
           fields: ["provider"],
         },
