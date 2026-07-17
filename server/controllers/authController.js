@@ -30,11 +30,14 @@ const register = async (req, res) => {
 
     const verificationCode = generateVerificationCode();
 
+    // Hash password here (moved from model hooks)
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await Users.create({
       name,
       email,
       phoneNumber,
-      password,
+      password: hashedPassword,
       userType: "customer",
       verified: false,
       verificationCode,
@@ -44,25 +47,22 @@ const register = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Operation completed successfully.",
+      message: "Account Registered Successfully.",
       data: {
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          userType: user.userType,
-          verified: user.verified,
-        },
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        userType: user.userType,
         token,
-        verificationCode,
       },
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Account registration failed.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -83,7 +83,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found.",
+        message: "No User Found",
         data: null,
       });
     }
@@ -101,23 +101,22 @@ const login = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Operation completed successfully.",
+      message: "Login Successfully",
       data: {
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          userType: user.userType,
-        },
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        userType: user.userType,
         token,
       },
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Login failed.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -131,21 +130,22 @@ const loadUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found.",
+        message: "No User Found",
         data: null,
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "Operation completed successfully.",
+      message: "User loaded successfully.",
       data: user,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Failed to load user.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -166,7 +166,7 @@ const verifyEmail = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found.",
+        message: "No User Found",
         data: null,
       });
     }
@@ -199,8 +199,9 @@ const verifyEmail = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Email verification failed.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -245,8 +246,9 @@ const resendVerificationCode = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Resend verification failed.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -281,8 +283,9 @@ const forgotPassword = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Failed to generate password reset token.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -308,7 +311,9 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    user.password = password;
+    // hash the new password before saving
+    const hashed = await bcrypt.hash(password, 10);
+    user.password = hashed;
     user.passwordResetToken = null;
     user.passwordResetExpires = null;
     await user.save();
@@ -323,8 +328,9 @@ const resetPassword = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Password reset failed.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -332,7 +338,7 @@ const resetPassword = async (req, res) => {
 const logout = async (req, res) => {
   return res.status(200).json({
     success: true,
-    message: "Operation completed successfully.",
+    message: "Logout Successfully",
     data: null,
   });
 };

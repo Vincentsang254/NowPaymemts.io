@@ -1,5 +1,4 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require("bcryptjs");
 
 module.exports = (sequelize) => {
   const Users = sequelize.define(
@@ -64,17 +63,7 @@ module.exports = (sequelize) => {
     }
   );
 
-  Users.beforeCreate(async (user) => {
-    if (user.password) {
-      user.password = await bcrypt.hash(user.password, 10);
-    }
-  });
-
-  Users.beforeUpdate(async (user) => {
-    if (user.changed("password") && user.password) {
-      user.password = await bcrypt.hash(user.password, 10);
-    }
-  });
+  // Password hashing and related auth logic are handled in the auth controller.
 
   return Users;
 };

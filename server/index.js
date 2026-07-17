@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: process.env.CORS_ORIGIN || "https://dating-rpig.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -37,7 +37,7 @@ app.use("/api/payment", paymentRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ success: false, message: "Operation failed.", data: null });
+  res.status(500).json({ success: false, message: "Internal Server Error", data: null, error: err.message });
 });
 
 

@@ -16,10 +16,6 @@ module.exports = (sequelize) => {
         unique: true,
       },
 
-      orderId: {
-        type: DataTypes.STRING(100),
-        allowNull: true,
-      },
 
       paymentId: {
         type: DataTypes.STRING(100),
@@ -31,34 +27,12 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
 
-      provider: {
-        type: DataTypes.ENUM(
-          "Flutterwave",
-          "NOWPayments"
-        ),
-        allowNull: false,
-      },
-
-      paymentType: {
-        type: DataTypes.ENUM(
-          "Property",
-          "Subscription",
-          "ContactAccess",
-          "Other"
-        ),
-        allowNull: false,
-      },
 
       amount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
 
-      currency: {
-        type: DataTypes.STRING(10),
-        allowNull: false,
-        defaultValue: "USD",
-      },
 
       priceCurrency: {
         type: DataTypes.STRING(10),
@@ -111,9 +85,10 @@ module.exports = (sequelize) => {
         allowNull: true,
       },
 
-      metadata: {
-        type: DataTypes.TEXT("long"),
-        allowNull: true,
+      provider: {
+        type: DataTypes.ENUM("NOWPayments"),
+        allowNull: false,
+        defaultValue: "NOWPayments",
       },
 
       userId: {

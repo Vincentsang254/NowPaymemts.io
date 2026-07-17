@@ -5,23 +5,22 @@ const createNowPayment = async (req, res) => {
     const payment = await Payments.create({
       reference: `payment-${Date.now()}`,
       provider: "NOWPayments",
-      paymentType: "Other",
-      amount: 0,
-      currency: "USD",
+      amount: req.body.amount || 0,
       userId: req.user?.id,
       status: "pending",
     });
 
     return res.status(201).json({
       success: true,
-      message: "Operation completed successfully.",
+      message: "Payment Created Successfully",
       data: payment,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Operation failed.",
+      message: "Failed to create payment.",
       data: null,
+      error: error.message,
     });
   }
 };
@@ -42,7 +41,7 @@ const getNowPaymentStatus = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Operation completed successfully.",
+      message: "Payment Retrieved Successfully",
       data: payment,
     });
   } catch (error) {
@@ -70,7 +69,7 @@ const verifyNowPayment = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Operation completed successfully.",
+      message: "Payment Verified",
       data: payment,
     });
   } catch (error) {
@@ -85,7 +84,7 @@ const verifyNowPayment = async (req, res) => {
 const nowPaymentsWebhook = async (req, res) => {
   return res.status(200).json({
     success: true,
-    message: "Operation completed successfully.",
+    message: "Webhook received",
     data: null,
   });
 };

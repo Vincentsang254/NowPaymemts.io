@@ -1,3 +1,60 @@
+# FILES THAT MUST NEVER BE MODIFIED
+
+Unless explicitly instructed.
+
+## Client (frontend)
+ 
+- src/App.jsx -> only modify when adding routes or new pages
+- src/redux/slices/api.js -> only modify when adding slices; create new slices under src/redux/slices/ like userSlice.js, authSlice.js, paymentSlice.js etc and configure them in src/redux/store.js
+
+NEVER MODIFY the following directories/files unless explicitly requested:
+
+- src/components/adminView
+- src/components/customerView
+- src/components/auth
+- src/components/common/check-auth.jsx
+
+Note: An exception — provide new component code only when explicitly requested. You asked for the `src/components/customerView/customer-sidebar.jsx` component; that file may be added or updated only when you request it.
+# API RESPONSE FORMAT
+
+Every endpoint must return a consistent JSON shape and use operation-specific messages.
+
+Success example (registration):
+
+{
+    "success": true,
+    "message": "Account Registered Successfully.",
+    "data": {
+        "id": 1,
+        "name": "John",
+        "email": "john@example.com",
+        "phoneNumber": "",
+        "userType": "customer",
+        "token": "jwt-token"
+    }
+}
+
+Success example (login):
+
+{
+    "success": true,
+    "message": "Login Successfully",
+    "data": { ... }
+}
+
+Failure example:
+
+{
+    "success": false,
+    "message": "No User Found",
+    "data": null,
+    "error": "<database or validation error message>"
+}
+
+Rules:
+- `message` must match the operation (e.g., "Login Successfully", "Deleted Successfully", "No User Found").
+- Include real database or validation error details in the `error` field when available. Do not return opaque success messages for failed or partial operations.
+- Keep the top-level shape consistent across endpoints: `success`, `message`, `data`, and optionally `error`.
 # COPILOT_INSTRUCTIONS.md
 
 # Dating Platform AI Development Instructions
