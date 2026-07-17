@@ -15,13 +15,22 @@ import ResetPasswordPage from "./pages/auth/password-reset.jsx";
 import AdminDashboardPage from "./pages/adminView/dashboard/dashboard.jsx";
 import CustomerDashboardPage from "./pages/customerView/dashboard/home.jsx";
 import ProfilePage from "./pages/customerView/profile/profile.jsx";
+import DiscoverPage from "./pages/customerView/discover/discover.jsx";
+import MatchesPage from "./pages/customerView/matches/matches.jsx";
+import LikesPage from "./pages/customerView/likes/likes.jsx";
+import ConversationsPage from "./pages/customerView/messages/conversations.jsx";
+import ChatPage from "./pages/customerView/messages/chat.jsx";
 import { loadUser, refreshToken } from "./redux/slices/authSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import socketService from "@/services/socketService";
+import { setUserFeatures } from "@/redux/slices/messagingSlice";
+import axios from "axios";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
+  const { token, id: userId } = useSelector((state) => state.auth);
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
   useEffect(() => {
     if (token) {
@@ -32,6 +41,28 @@ const App = () => {
   useEffect(() => {
     dispatch(loadUser());
   }, [dispatch]);
+
+  // Initialize Socket.IO and fetch premium features when user is authenticated
+  useEffect(() => {
+    if (token && userId) {
+      // Initialize Socket.IO
+      socketService.connect(token);
+
+      // Fetch premium features
+      axios
+        .get(`${API_URL}/messaging/premium-features`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          dispatch(setUserFeatures(response.data.data));
+        })
+        .catch((error) => {
+          console.error("Failed to fetch premium features:", error);
+        });
+    }
+  }, [token, userId, dispatch]);
 
   return (
     <div className="flex min-h-screen flex-col overflow-hidden bg-white">
@@ -69,6 +100,11 @@ const App = () => {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<CustomerDashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="discover" element={<DiscoverPage />} />
+          <Route path="matches" element={<MatchesPage />} />
+          <Route path="likes" element={<LikesPage />} />
+          <Route path="messages" element={<ConversationsPage />} />
+          <Route path="messages/:conversationId" element={<ChatPage />} />
         </Route>
       </Routes>
     </div>

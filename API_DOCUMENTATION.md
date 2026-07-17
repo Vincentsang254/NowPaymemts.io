@@ -369,6 +369,244 @@ NOWPayments webhook for payment status updates.
 
 ---
 
+## MESSAGING ENDPOINTS
+
+### POST /messaging/conversations
+
+Get or create a conversation with another user.
+
+**Auth:** Required
+
+**Body:**
+```json
+{
+  "userId": 2
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Conversation retrieved or created successfully",
+  "data": {
+    "id": 1,
+    "user1Id": 1,
+    "user2Id": 2,
+    "lastMessage": "Hi there!",
+    "lastMessageAt": "2026-07-17T14:30:00Z",
+    "user1": {
+      "id": 1,
+      "name": "John Doe",
+      "profilePic": "https://..."
+    },
+    "user2": {
+      "id": 2,
+      "name": "Jane Smith",
+      "profilePic": "https://..."
+    }
+  }
+}
+```
+
+---
+
+### GET /messaging/conversations
+
+Get all conversations for the authenticated user.
+
+**Auth:** Required
+
+**Query Parameters:**
+- `limit` (optional): Number of conversations to return (default: 10)
+- `offset` (optional): Pagination offset (default: 0)
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Conversations retrieved successfully",
+  "data": [
+    {
+      "id": 1,
+      "user1Id": 1,
+      "user2Id": 2,
+      "lastMessage": "See you soon!",
+      "lastMessageAt": "2026-07-17T14:30:00Z",
+      "user1": { ... },
+      "user2": { ... }
+    }
+  ]
+}
+```
+
+---
+
+### GET /messaging/conversations/:conversationId/messages
+
+Get messages in a specific conversation.
+
+**Auth:** Required
+
+**Query Parameters:**
+- `limit` (optional): Number of messages to return (default: 50)
+- `offset` (optional): Pagination offset (default: 0)
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Messages retrieved successfully",
+  "data": [
+    {
+      "id": 1,
+      "conversationId": 1,
+      "senderId": 1,
+      "recipientId": 2,
+      "content": "Hi, how are you?",
+      "isRead": true,
+      "readAt": "2026-07-17T14:31:00Z",
+      "createdAt": "2026-07-17T14:30:00Z",
+      "sender": {
+        "id": 1,
+        "name": "John Doe",
+        "profilePic": "https://..."
+      }
+    }
+  ]
+}
+```
+
+---
+
+### POST /messaging/messages
+
+Send a message in a conversation.
+
+**Auth:** Required
+
+**Body:**
+```json
+{
+  "conversationId": 1,
+  "content": "Hi there, how are you doing?"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Message sent successfully",
+  "data": {
+    "id": 2,
+    "conversationId": 1,
+    "senderId": 1,
+    "recipientId": 2,
+    "content": "Hi there, how are you doing?",
+    "isRead": false,
+    "createdAt": "2026-07-17T14:35:00Z",
+    "sender": {
+      "id": 1,
+      "name": "John Doe",
+      "profilePic": "https://..."
+    }
+  }
+}
+```
+
+---
+
+### POST /messaging/mark-read
+
+Mark all messages in a conversation as read.
+
+**Auth:** Required
+
+**Body:**
+```json
+{
+  "conversationId": 1
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Messages marked as read",
+  "data": {
+    "conversationId": 1
+  }
+}
+```
+
+---
+
+### GET /messaging/unread-count
+
+Get the count of unread messages for the authenticated user.
+
+**Auth:** Required
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Unread count retrieved successfully",
+  "data": {
+    "unreadCount": 5
+  }
+}
+```
+
+---
+
+### DELETE /messaging/conversations/:conversationId
+
+Delete a conversation and all its messages.
+
+**Auth:** Required
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Conversation deleted successfully",
+  "data": {
+    "conversationId": 1
+  }
+}
+```
+
+---
+
+### GET /messaging/premium-features
+
+Check user's premium features and messaging capabilities.
+
+**Auth:** Required
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Premium features retrieved successfully",
+  "data": {
+    "isPremium": true,
+    "features": {
+      "textMessages": true,
+      "voiceMessages": true,
+      "videoCalls": true,
+      "voiceCalls": true,
+      "screenShare": true
+    }
+  }
+}
+```
+
+---
+
 ## ERROR RESPONSES
 
 All errors follow this format:
@@ -387,5 +625,6 @@ All errors follow this format:
 - `201` - Created
 - `400` - Bad Request
 - `401` - Unauthorized
+- `403` - Forbidden
 - `404` - Not Found
 - `500` - Server Error

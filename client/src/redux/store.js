@@ -3,6 +3,7 @@ import authReducer from "./slices/authSlice";
 import userReducer from "./slices/userSlice";
 import paymentReducer from "./slices/paymentSlice";
 import matchingReducer from "./slices/matchingSlice";
+import messagingReducer from "./slices/messagingSlice";
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         user: userReducer,
         payment: paymentReducer,
         matching: matchingReducer,
+        messaging: messagingReducer,
     },
 });
 

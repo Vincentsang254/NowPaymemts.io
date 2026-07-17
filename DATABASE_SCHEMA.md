@@ -102,10 +102,86 @@
 
 ---
 
-## Models to Implement (Phase 5+)
+## Payments Model
 
-- **Messages** - Private messages between matched users
-- **Conversations** - Conversation threads
+**Table:** `Payments`
+
+| Field | Type | Constraints | Description |
+|-------|------|-----------|---|
+| id | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique payment identifier |
+| reference | STRING(100) | NOT NULL, UNIQUE | Payment reference |
+| paymentId | STRING(100) | | NOWPayments payment ID |
+| transactionId | STRING(150) | | Blockchain transaction ID |
+| amount | DECIMAL(10,2) | NOT NULL | Payment amount (USD) |
+| priceCurrency | STRING(10) | | Price currency code |
+| payCurrency | STRING(10) | | Crypto currency code |
+| payAmount | DECIMAL(20,8) | | Crypto amount paid |
+| payAddress | STRING(255) | | Payment wallet address |
+| paymentUrl | TEXT | | NOWPayments payment URL |
+| network | STRING(50) | | Blockchain network |
+| status | ENUM | pending, waiting, confirming, confirmed, sending, finished, failed, expired, cancelled | Payment status |
+| paidAt | DATE | | Payment completion date |
+| provider | ENUM | NOWPayments | Payment provider |
+| userId | INTEGER | NOT NULL, FK → Users.id | Associated user |
+| createdAt | DATE | TIMESTAMPS | Payment creation date |
+| updatedAt | DATE | TIMESTAMPS | Last update date |
+
+**Relationships:**
+- belongsTo Users (foreignKey: "userId")
+
+---
+
+## Conversations Model
+
+**Table:** `Conversations`
+
+| Field | Type | Constraints | Description |
+|-------|------|-----------|---|
+| id | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique conversation identifier |
+| user1Id | INTEGER | NOT NULL, FK → Users.id | First user in conversation |
+| user2Id | INTEGER | NOT NULL, FK → Users.id | Second user in conversation |
+| lastMessage | TEXT | | Last message content |
+| lastMessageAt | DATE | | Timestamp of last message |
+| lastMessageUserId | INTEGER | FK → Users.id | User who sent last message |
+| createdAt | DATE | TIMESTAMPS | Conversation creation date |
+| updatedAt | DATE | TIMESTAMPS | Last update date |
+
+**Indexes:**
+- UNIQUE (user1Id, user2Id) - Ensures one conversation pair per users
+
+**Relationships:**
+- belongsTo Users (as: "user1", foreignKey: "user1Id")
+- belongsTo Users (as: "user2", foreignKey: "user2Id")
+- belongsTo Users (as: "lastMessageUser", foreignKey: "lastMessageUserId")
+- hasMany Messages (foreignKey: "conversationId", as: "messages")
+
+---
+
+## Messages Model
+
+**Table:** `Messages`
+
+| Field | Type | Constraints | Description |
+|-------|------|-----------|---|
+| id | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique message identifier |
+| conversationId | INTEGER | NOT NULL, FK → Conversations.id | Associated conversation |
+| senderId | INTEGER | NOT NULL, FK → Users.id | Message sender |
+| recipientId | INTEGER | NOT NULL, FK → Users.id | Message recipient |
+| content | TEXT | NOT NULL | Message content |
+| isRead | BOOLEAN | DEFAULT: false | Read status |
+| readAt | DATE | | Timestamp when message was read |
+| createdAt | DATE | TIMESTAMPS | Message creation date |
+| updatedAt | DATE | TIMESTAMPS | Last update date |
+
+**Relationships:**
+- belongsTo Conversations (foreignKey: "conversationId", as: "conversation")
+- belongsTo Users (foreignKey: "senderId", as: "sender")
+- belongsTo Users (foreignKey: "recipientId", as: "recipient")
+
+---
+
+## Models to Implement (Phase 6+)
+
 - **Subscriptions** - Premium subscription tracking
 - **Notifications** - User notifications
 - **Reports** - User reports for moderation
