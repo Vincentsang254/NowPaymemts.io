@@ -3,14 +3,12 @@ const cloudinary = require("cloudinary");
 const fs = require("fs");
 const sharp = require("sharp");
 
-// configure cloudinary if env present
-if (process.env.CLOUDINARY_CLOUD_NAME) {
-  cloudinary.v2.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-}
+// Configure Cloudinary directly for this project.
+cloudinary.v2.config({
+  cloud_name: "vincentsang",
+  api_key: "455286944547629",
+  api_secret: "764okYVYwP9WOp5iXMKS7Oxbr7c",
+});
 
 const getProfile = async (req, res) => {
   try {

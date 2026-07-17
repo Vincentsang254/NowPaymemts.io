@@ -4,11 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 import { Home, User, Star, MessageSquare, CreditCard } from "lucide-react";
 
 const navItems = [
-	{ id: "dashboard", label: "Dashboard", path: "/user/dashboard", icon: Home },
+	{ id: "dashboard", label: "Discover", path: "/user/dashboard", icon: Home },
 	{ id: "profile", label: "Profile", path: "/user/profile", icon: User },
-	{ id: "messages", label: "Messages", path: "/user/messages", icon: MessageSquare },
+	{ id: "messages", label: "Chats", path: "/user/messages", icon: MessageSquare },
 	{ id: "vip", label: "Premium", path: "/user/vip", icon: Star },
-	{ id: "payments", label: "Payments", path: "/user/payments", icon: CreditCard },
+	{ id: "payments", label: "Boosts", path: "/user/payments", icon: CreditCard },
 ];
 
 const SidebarItem = ({ item, active }) => {
@@ -32,8 +32,8 @@ const CustomerSidebar = ({ className = "w-64" }) => {
 	return (
 		<aside className={`${className} hidden lg:block bg-white border-r p-4`}>
 			<div className="mb-6 px-1">
-				<h3 className="text-sm font-semibold">Monster Tipsters</h3>
-				<p className="text-xs text-gray-500">Find tips, go premium, win more</p>
+				<h3 className="text-sm font-semibold">SparkMatch</h3>
+				<p className="text-xs text-gray-500">Meet, connect, and spark chemistry</p>
 			</div>
 
 			<nav className="flex flex-col space-y-1">

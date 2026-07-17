@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { url } from "@/redux/slices/api";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ResetPasswordPage = () => {
@@ -41,6 +41,9 @@ const ResetPasswordPage = () => {
             {loading ? "Saving..." : "Save Password"}
           </button>
         </form>
+        <p className="mt-4 text-sm text-gray-600">
+          <Link to="/auth/login" className="text-primary font-medium">Back to sign in</Link>
+        </p>
       </div>
     </div>
   );

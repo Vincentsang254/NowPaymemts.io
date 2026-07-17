@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "@/redux/slices/authSlice";
 import { toast } from "react-toastify";
 
@@ -29,7 +29,7 @@ const RegisterPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md bg-white p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4">Register</h2>
+        <h2 className="text-xl font-semibold mb-4">Create your account</h2>
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
             placeholder="Name"
@@ -58,6 +58,9 @@ const RegisterPage = () => {
             {loading ? "Creating..." : "Create Account"}
           </button>
         </form>
+        <p className="mt-4 text-sm text-gray-600">
+          Already have an account? <Link to="/auth/login" className="text-primary font-medium">Sign in</Link>
+        </p>
       </div>
     </div>
   );

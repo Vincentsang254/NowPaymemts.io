@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "@/redux/slices/authSlice";
 import { toast } from "react-toastify";
 
@@ -28,7 +28,8 @@ const LoginPage = () => {
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gray-50">
 			<div className="w-full max-w-md bg-white p-6 rounded shadow">
-				<h2 className="text-xl font-semibold mb-4">Login</h2>
+				<h2 className="text-xl font-semibold mb-4">Welcome back</h2>
+				<p className="text-sm text-gray-500 mb-4">Sign in to keep meeting new people.</p>
 				<form onSubmit={handleSubmit} className="space-y-3">
 					<input
 						type="email"
@@ -54,6 +55,14 @@ const LoginPage = () => {
 						{loading ? "Signing in..." : "Sign In"}
 					</button>
 				</form>
+				<div className="mt-4 text-sm text-gray-600 space-y-2">
+					<p>
+						New here? <Link to="/auth/register" className="text-primary font-medium">Create an account</Link>
+					</p>
+					<p>
+						Forgot your password? <Link to="/auth/forgot-password" className="text-primary font-medium">Reset it</Link>
+					</p>
+				</div>
 			</div>
 		</div>
 	);

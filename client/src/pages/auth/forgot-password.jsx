@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { url } from "@/redux/slices/api";
 import { toast } from "react-toastify";
 
@@ -37,6 +38,14 @@ const ForgotPasswordPage = () => {
             {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
+        <div className="mt-4 text-sm text-gray-600 space-y-2">
+          <p>
+            Remembered your password? <Link to="/auth/login" className="text-primary font-medium">Back to login</Link>
+          </p>
+          <p>
+            New here? <Link to="/auth/register" className="text-primary font-medium">Create an account</Link>
+          </p>
+        </div>
       </div>
     </div>
   );
