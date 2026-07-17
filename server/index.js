@@ -7,6 +7,7 @@ const cors = require("cors")
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const matchingRoutes = require("./routes/matchingRoutes");
 
 dotenv.config();
 const app = express();
@@ -34,6 +35,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/matching", matchingRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
