@@ -87,6 +87,11 @@ module.exports = (sequelize) => {
       foreignKey: "paymentId",
       as: "payment",
     });
+    Subscriptions.belongsTo(models.SubscriptionPlans, {
+      foreignKey: "tier",
+      targetKey: "tier",
+      as: "plan",
+    });
   };
 
   return Subscriptions;

@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 
 /**
@@ -7,28 +8,21 @@ const db = require("../models");
  */
 const checkPremiumStatus = async (userId) => {
   try {
-    // Check if user has a recent successful payment
-    const recentPayment = await db.Payments.findOne({
+    const subscription = await db.Subscriptions.findOne({
       where: {
         userId,
-        status: "finished", // Only confirmed/finished payments count
+        status: "active",
+        tier: {
+          [Op.in]: ["premium", "vip"],
+        },
+        endDate: {
+          [Op.or]: [{ [Op.gte]: new Date() }, { [Op.is]: null }],
+        },
       },
-      order: [["paidAt", "DESC"]],
+      order: [["updatedAt", "DESC"]],
     });
 
-    if (!recentPayment) {
-      return false;
-    }
-
-    // Check if payment is recent (within last 30 days)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    if (recentPayment.paidAt >= thirtyDaysAgo) {
-      return true;
-    }
-
-    return false;
+    return !!subscription;
   } catch (error) {
     console.error("Error checking premium status:", error);
     return false;

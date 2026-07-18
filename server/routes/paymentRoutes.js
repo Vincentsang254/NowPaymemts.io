@@ -20,6 +20,50 @@ router.post(
 
 /*
 |--------------------------------------------------------------------------
+| List Subscription Plans
+|--------------------------------------------------------------------------
+| Returns the available premium subscription plans.
+*/
+router.get("/plans", verifyToken, paymentController.listSubscriptionPlans);
+
+/*
+|--------------------------------------------------------------------------
+| Get User Subscription Status
+|--------------------------------------------------------------------------
+| Returns the current subscription status for the authenticated user.
+*/
+router.get(
+  "/subscription/status",
+  verifyToken,
+  paymentController.getUserSubscription
+);
+
+/*
+|--------------------------------------------------------------------------
+| Activate Subscription
+|--------------------------------------------------------------------------
+| Creates or updates the authenticated user's premium subscription.
+*/
+router.post(
+  "/subscription/activate",
+  verifyToken,
+  paymentController.activateSubscription
+);
+
+/*
+|--------------------------------------------------------------------------
+| Cancel Subscription
+|--------------------------------------------------------------------------
+| Cancels the authenticated user's active subscription.
+*/
+router.post(
+  "/subscription/cancel",
+  verifyToken,
+  paymentController.cancelSubscription
+);
+
+/*
+|--------------------------------------------------------------------------
 | Get Payment Status
 |--------------------------------------------------------------------------
 | Returns the current payment status from your database.

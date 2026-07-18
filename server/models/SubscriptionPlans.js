@@ -32,10 +32,10 @@ module.exports = (sequelize) => {
         defaultValue: "monthly",
       },
       features: {
-        type: DataTypes.JSON,
+        type: DataTypes.TEXT,
         allowNull: false,
-        defaultValue: {},
-        comment: "JSON object with feature flags",
+        defaultValue: "{}",
+        comment: "Feature flags stored as text metadata",
       },
       maxMatches: {
         type: DataTypes.INTEGER,
@@ -82,6 +82,14 @@ module.exports = (sequelize) => {
       timestamps: true,
     }
   );
+
+  SubscriptionPlans.associate = (models) => {
+    SubscriptionPlans.hasMany(models.Subscriptions, {
+      foreignKey: "tier",
+      sourceKey: "tier",
+      as: "subscriptions",
+    });
+  };
 
   return SubscriptionPlans;
 };

@@ -260,6 +260,112 @@ Get users this user has liked.
 
 ---
 
+## PAYMENT / SUBSCRIPTION ENDPOINTS
+
+### GET /payment/plans
+
+Get the available subscription plans.
+
+**Auth:** Required
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Subscription plans retrieved successfully",
+  "data": [
+    {
+      "id": 1,
+      "tier": "free",
+      "name": "Free",
+      "price": "0.00"
+    }
+  ]
+}
+```
+
+---
+
+### GET /payment/subscription/status
+
+Get the authenticated user's current subscription status.
+
+**Auth:** Required
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "User subscription retrieved successfully",
+  "data": {
+    "tier": "premium",
+    "status": "active",
+    "userId": 1,
+    "plan": {
+      "tier": "premium",
+      "name": "Premium"
+    }
+  }
+}
+```
+
+---
+
+### POST /payment/subscription/activate
+
+Activate a premium subscription for the authenticated user.
+
+**Auth:** Required
+
+**Body:**
+```json
+{
+  "planTier": "premium",
+  "billingCycle": "monthly",
+  "paymentId": 12
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Subscription activated successfully",
+  "data": {
+    "tier": "premium",
+    "status": "active"
+  }
+}
+```
+
+---
+
+### POST /payment/subscription/cancel
+
+Cancel the authenticated user's active subscription.
+
+**Auth:** Required
+
+**Body:**
+```json
+{
+  "reason": "No longer needed"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Subscription cancelled successfully",
+  "data": {
+    "status": "cancelled"
+  }
+}
+```
+
+---
+
 ### GET /matching/likes-received
 
 Get likes received from other users.

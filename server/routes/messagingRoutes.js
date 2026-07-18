@@ -1,11 +1,11 @@
 const express = require("express");
 const messagingController = require("../controllers/messagingController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { verifyToken } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 // All routes require authentication
-router.use(authMiddleware);
+router.use(verifyToken);
 
 // Get or create conversation with another user
 router.post("/conversations", messagingController.getOrCreateConversation);

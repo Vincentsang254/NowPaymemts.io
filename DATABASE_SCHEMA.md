@@ -180,9 +180,62 @@
 
 ---
 
-## Models to Implement (Phase 6+)
+## SubscriptionPlans Model
 
-- **Subscriptions** - Premium subscription tracking
+**Table:** `SubscriptionPlans`
+
+| Field | Type | Constraints | Description |
+|-------|------|-----------|---|
+| id | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique plan identifier |
+| tier | ENUM | free, premium, vip | Subscription tier |
+| name | STRING(100) | NOT NULL | Display name for the plan |
+| description | TEXT | | Plan description |
+| price | DECIMAL(10,2) | NOT NULL | Plan price |
+| billingCycle | ENUM | monthly, annual | Billing cadence |
+| features | TEXT | NOT NULL | Serialized feature flags metadata |
+| maxMatches | INTEGER | DEFAULT -1 | Match limit |
+| maxLikes | INTEGER | DEFAULT -1 | Like limit |
+| voiceMessages | BOOLEAN | DEFAULT false | Voice messaging availability |
+| videoCalls | BOOLEAN | DEFAULT false | Video call availability |
+| voiceCalls | BOOLEAN | DEFAULT false | Voice call availability |
+| screenShare | BOOLEAN | DEFAULT false | Screen-share availability |
+| active | BOOLEAN | DEFAULT true | Whether the plan is available |
+| createdAt | DATE | TIMESTAMPS | Record creation date |
+| updatedAt | DATE | TIMESTAMPS | Record update date |
+
+**Relationships:**
+- hasMany Subscriptions (foreignKey: `tier`, sourceKey: `tier`)
+
+---
+
+## Subscriptions Model
+
+**Table:** `Subscriptions`
+
+| Field | Type | Constraints | Description |
+|-------|------|-----------|---|
+| id | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique subscription record |
+| userId | INTEGER | NOT NULL, FK → Users.id | User owning the subscription |
+| paymentId | INTEGER | FK → Payments.id | Related payment record |
+| tier | ENUM | free, premium, vip | Active subscription tier |
+| status | ENUM | active, inactive, cancelled, expired | Subscription status |
+| startDate | DATE | NOT NULL | Start date |
+| endDate | DATE | | End date |
+| autoRenew | BOOLEAN | DEFAULT true | Renewal flag |
+| cancelledAt | DATE | | Cancellation timestamp |
+| cancellationReason | TEXT | | Cancellation reason |
+| createdAt | DATE | TIMESTAMPS | Record creation date |
+| updatedAt | DATE | TIMESTAMPS | Record update date |
+
+**Relationships:**
+- belongsTo Users (foreignKey: `userId`, as: `user`)
+- belongsTo Payments (foreignKey: `paymentId`, as: `payment`)
+- belongsTo SubscriptionPlans (foreignKey: `tier`, targetKey: `tier`, as: `plan`)
+
+---
+
+## Models to Implement (Phase 7+)
+
 - **Notifications** - User notifications
 - **Reports** - User reports for moderation
 - **Blocks** - User blocking functionality

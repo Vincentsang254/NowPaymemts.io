@@ -1,11 +1,11 @@
 const express = require("express");
 const matchingController = require("../controllers/matchingController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { verifyToken } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 // All routes require authentication
-router.use(authMiddleware);
+router.use(verifyToken);
 
 // Like a user
 router.post("/like", matchingController.likeUser);

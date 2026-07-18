@@ -1,5 +1,14 @@
 ## July 2026
 
+### Phase 6: Premium Subscriptions (IN PROGRESS)
+
+#### Backend
+- Added subscription plan seeding and premium subscription activation/cancellation endpoints.
+- Implemented `getUserSubscription`, `listSubscriptionPlans`, `activateSubscription`, and `cancelSubscription` in the payment controller.
+- Wired new `/api/payment/plans`, `/api/payment/subscription/status`, `/api/payment/subscription/activate`, and `/api/payment/subscription/cancel` routes.
+- Updated premium feature checks to resolve active premium/vip subscriptions from the database instead of relying on a single recent payment record.
+- Replaced the MySQL-incompatible `JSON` subscription plan field with a supported text metadata field and kept the premium feature flags in the existing model architecture.
+
 ### Phase 5: Chat System (COMPLETED)
 
 #### Backend - Socket.IO Real-Time Messaging
