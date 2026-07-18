@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const API_KEY = process.env.NOWPAYMENTS_API_KEY;
 const API_URL = process.env.NOWPAYMENTS_API_URL || "https://api.nowpayments.io/v1";
-const CLIENT_URL = process.env.CLIENT_URL || process.env.APP_URL || "http://localhost:5173";
+const CLIENT_URL = process.env.CLIENT_URL || process.env.APP_URL || "https://dating-rpig.onrender.com";
 const IPN_SECRET = process.env.NOWPAYMENTS_IPN_SECRET;
 
 const buildReturnUrl = (path = "/user/vip") => {
