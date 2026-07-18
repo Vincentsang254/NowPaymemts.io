@@ -10,6 +10,62 @@ const initialState = {
   error: null,
 };
 
+export const listSubscriptionPlans = createAsyncThunk(
+  "payment/listSubscriptionPlans",
+  async (_, { rejectWithValue }) => {
+    try {
+      const headers = setHeaders();
+      const response = await axios.get(`${url}/payment/plans`, headers);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to get subscription plans", { position: "top-center" });
+      return rejectWithValue(error.response?.data || { message: error.message });
+    }
+  }
+);
+
+export const getUserSubscription = createAsyncThunk(
+  "payment/getUserSubscription",
+  async (_, { rejectWithValue }) => {
+    try {
+      const headers = setHeaders();
+      const response = await axios.get(`${url}/payment/subscription/status`, headers);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to get subscription status", { position: "top-center" });
+      return rejectWithValue(error.response?.data || { message: error.message });
+    }
+  }
+);
+
+export const activateSubscription = createAsyncThunk(
+  "payment/activateSubscription",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const headers = setHeaders();
+      const response = await axios.post(`${url}/payment/subscription/activate`, payload, headers);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to activate subscription", { position: "top-center" });
+      return rejectWithValue(error.response?.data || { message: error.message });
+    }
+  }
+);
+
+export const cancelSubscription = createAsyncThunk(
+  "payment/cancelSubscription",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const headers = setHeaders();
+      const response = await axios.post(`${url}/payment/subscription/cancel`, payload, headers);
+      return response.data.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to cancel subscription", { position: "top-center" });
+      return rejectWithValue(error.response?.data || { message: error.message });
+    }
+  }
+);
+
 export const createNowPayment = createAsyncThunk("payment/createNowPayment", async (payload, { rejectWithValue }) => {
   try {
     const headers = setHeaders();
@@ -38,6 +94,54 @@ const paymentSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(listSubscriptionPlans.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(listSubscriptionPlans.fulfilled, (state, action) => {
+        state.status = "success";
+        state.list = action.payload || [];
+      })
+      .addCase(listSubscriptionPlans.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload?.message || action.error?.message;
+      })
+
+      .addCase(getUserSubscription.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(getUserSubscription.fulfilled, (state, action) => {
+        state.status = "success";
+        state.current = action.payload || null;
+      })
+      .addCase(getUserSubscription.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload?.message || action.error?.message;
+      })
+
+      .addCase(activateSubscription.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(activateSubscription.fulfilled, (state, action) => {
+        state.status = "success";
+        state.current = action.payload || null;
+      })
+      .addCase(activateSubscription.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload?.message || action.error?.message;
+      })
+
+      .addCase(cancelSubscription.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(cancelSubscription.fulfilled, (state, action) => {
+        state.status = "success";
+        state.current = action.payload || null;
+      })
+      .addCase(cancelSubscription.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload?.message || action.error?.message;
+      })
+
       .addCase(createNowPayment.pending, (state) => {
         state.status = "pending";
       })

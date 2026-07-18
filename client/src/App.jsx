@@ -20,6 +20,7 @@ import MatchesPage from "./pages/customerView/matches/matches.jsx";
 import LikesPage from "./pages/customerView/likes/likes.jsx";
 import ConversationsPage from "./pages/customerView/messages/conversations.jsx";
 import ChatPage from "./pages/customerView/messages/chat.jsx";
+import PremiumPage from "./pages/customerView/payments/premium.jsx";
 import { loadUser, refreshToken } from "./redux/slices/authSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -105,6 +106,8 @@ const App = () => {
           <Route path="likes" element={<LikesPage />} />
           <Route path="messages" element={<ConversationsPage />} />
           <Route path="messages/:conversationId" element={<ChatPage />} />
+          <Route path="vip" element={<PremiumPage />} />
+          <Route path="payments" element={<PremiumPage />} />
         </Route>
       </Routes>
     </div>
