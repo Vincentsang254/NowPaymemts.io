@@ -5,14 +5,16 @@ const { loadUser } = require("../controllers/authController");
 const profileController = require("../controllers/profileController");
 const upload = require("../middlewares/multerUpload");
 
-router.get("/me", verifyToken, loadUser);
+router.use(verifyToken);
+
+router.get("/me", loadUser);
 
 // Profile endpoints
-router.get("/profile", verifyToken, profileController.getProfile);
-router.get("/profile/:userId", verifyToken, profileController.getUserProfile);
-router.put("/profile", verifyToken, profileController.updateProfile);
-router.post("/profile/upload", verifyToken, upload.single("image"), profileController.uploadProfilePhoto);
-router.delete("/profile/photo", verifyToken, profileController.deletePhoto);
-router.put("/profile/photos/reorder", verifyToken, profileController.reorderPhotos);
+router.get("/profile", profileController.getProfile);
+router.get("/profile/:userId", profileController.getUserProfile);
+router.put("/profile", profileController.updateProfile);
+router.post("/profile/upload", upload.single("image"), profileController.uploadProfilePhoto);
+router.delete("/profile/photo", profileController.deletePhoto);
+router.put("/profile/photos/reorder", profileController.reorderPhotos);
 
 module.exports = router;
