@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, User, MessageSquare, Star, CreditCard, Settings, LogOut } from "lucide-react";
+import { Home, User, MessageSquare, Star, CreditCard, Settings, LogOut, Heart } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "@/redux/slices/authSlice";
 
 const navItems = [
-	{ id: "dashboard", label: "Discover", path: "/user/dashboard", icon: Home },
+	{ id: "discover", label: "Discover", path: "/user/discover", icon: Home },
+	{ id: "matches", label: "Matches", path: "/user/matches", icon: Heart },
 	{ id: "profile", label: "Profile", path: "/user/profile", icon: User },
 	{ id: "messages", label: "Messages", path: "/user/messages", icon: MessageSquare },
 	{ id: "vip", label: "Premium", path: "/user/vip", icon: Star },

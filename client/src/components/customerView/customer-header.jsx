@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 const menuItems = [
-  { id: "home", label: "Discover", path: "/user/dashboard" },
+  { id: "discover", label: "Discover", path: "/user/discover" },
+  { id: "matches", label: "Matches", path: "/user/matches" },
+  { id: "messages", label: "Messages", path: "/user/messages" },
   { id: "profile", label: "Profile", path: "/user/profile" },
   { id: "premium", label: "Premium", path: "/user/vip" },
 ];

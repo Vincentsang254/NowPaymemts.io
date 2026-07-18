@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
+  getConversations,
   getMessages,
   sendMessage,
   markAsRead,
@@ -9,6 +10,7 @@ import {
   setIncomingCall,
   clearIncomingCall,
   setActiveCall,
+  setCurrentConversation,
   setUserFeatures,
   addTypingUser,
   removeTypingUser,
@@ -26,7 +28,8 @@ const ChatPage = () => {
     messages, 
     messagesLoading, 
     messagesError, 
-    currentConversation, 
+    currentConversation,
+    conversations,
     loading,
     userFeatures,
     incomingCall,
@@ -40,10 +43,20 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (conversationId) {
+      dispatch(getConversations({ limit: 20, offset: 0 }));
       dispatch(getMessages({ conversationId, limit: 50, offset: 0 }));
       dispatch(markAsRead(parseInt(conversationId)));
     }
   }, [dispatch, conversationId]);
+
+  useEffect(() => {
+    if (!conversationId || !conversations?.length) return;
+
+    const matchedConversation = conversations.find((item) => item.id === Number(conversationId));
+    if (matchedConversation) {
+      dispatch(setCurrentConversation(matchedConversation));
+    }
+  }, [conversationId, conversations, dispatch]);
 
   // Initialize Socket.IO connection
   useEffect(() => {
@@ -112,9 +125,9 @@ const ChatPage = () => {
     }
 
     const callId = `call_${Date.now()}`;
-    const recipientId = currentConversation?.user1Id === userId 
-      ? currentConversation?.user2Id 
-      : currentConversation?.user1Id;
+    const recipientId = otherUser?.id || (currentConversation?.user1Id === userId
+      ? currentConversation?.user2Id
+      : currentConversation?.user1Id);
 
     dispatch(setActiveCall({ callId, type: "voice", recipientId }));
     socketService.emitCallInitiate({
@@ -132,9 +145,9 @@ const ChatPage = () => {
     }
 
     const callId = `call_${Date.now()}`;
-    const recipientId = currentConversation?.user1Id === userId 
-      ? currentConversation?.user2Id 
-      : currentConversation?.user1Id;
+    const recipientId = otherUser?.id || (currentConversation?.user1Id === userId
+      ? currentConversation?.user2Id
+      : currentConversation?.user1Id);
 
     dispatch(setActiveCall({ callId, type: "video", recipientId }));
     socketService.emitCallInitiate({
@@ -192,10 +205,11 @@ const ChatPage = () => {
   };
 
   const getOtherUser = () => {
-    if (!currentConversation) return null;
-    return currentConversation.user1Id === userId
-      ? currentConversation.user2
-      : currentConversation.user1;
+    const activeConversation = currentConversation || conversations.find((item) => item.id === Number(conversationId));
+    if (!activeConversation) return null;
+    return activeConversation.user1Id === userId
+      ? activeConversation.user2
+      : activeConversation.user1;
   };
 
   const otherUser = getOtherUser();

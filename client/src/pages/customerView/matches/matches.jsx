@@ -1,17 +1,31 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserMatches } from "@/redux/slices/matchingSlice";
+import { getOrCreateConversation, setCurrentConversation } from "@/redux/slices/messagingSlice";
 import { MessageCircle, AlertCircle, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const MatchesPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { matches, matchesLoading, matchesError } = useSelector((state) => state.matching);
 
   useEffect(() => {
     dispatch(getUserMatches());
   }, [dispatch]);
+
+  const handleStartChat = async (otherUserId) => {
+    try {
+      const resultAction = await dispatch(getOrCreateConversation(otherUserId));
+      if (getOrCreateConversation.fulfilled.match(resultAction)) {
+        dispatch(setCurrentConversation(resultAction.payload));
+        navigate(`/user/messages/${resultAction.payload.id}`);
+      }
+    } catch (error) {
+      console.error("Failed to start conversation:", error);
+    }
+  };
 
   if (matchesLoading) {
     return (
@@ -127,12 +141,13 @@ const MatchesPage = () => {
                   )}
 
                   {/* Action Button */}
-                  <Link to={`/user/messages?match=${otherUser?.id}`}>
-                    <Button className="w-full mt-4 flex items-center justify-center gap-2">
-                      <MessageCircle className="w-4 h-4" />
-                      Send Message
-                    </Button>
-                  </Link>
+                  <Button
+                    className="w-full mt-4 flex items-center justify-center gap-2"
+                    onClick={() => handleStartChat(otherUser?.id)}
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Send Message
+                  </Button>
                 </div>
               </div>
             );

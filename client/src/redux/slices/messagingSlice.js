@@ -226,6 +226,9 @@ const messagingSlice = createSlice({
     setIncomingCall: (state, action) => {
       state.incomingCall = action.payload;
     },
+    setCurrentConversation: (state, action) => {
+      state.currentConversation = action.payload;
+    },
     clearIncomingCall: (state) => {
       state.incomingCall = null;
     },
@@ -353,6 +356,7 @@ export const {
   addMessage, 
   updateConversationLastMessage,
   setIncomingCall,
+  setCurrentConversation,
   clearIncomingCall,
   setActiveCall,
   clearActiveCall,
