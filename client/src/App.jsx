@@ -13,6 +13,10 @@ import VerifyAccountPage from "./pages/auth/verify-account.jsx";
 import CheckEmailPage from "./pages/auth/check-email.jsx";
 import ResetPasswordPage from "./pages/auth/password-reset.jsx";
 import AdminDashboardPage from "./pages/adminView/dashboard/dashboard.jsx";
+import AdminUsersPage from "./pages/adminView/users/users.jsx";
+import AdminPaymentsPage from "./pages/adminView/payments/payments.jsx";
+import AdminReportsPage from "./pages/adminView/reports/reports.jsx";
+import AdminAnalyticsPage from "./pages/adminView/analytics/analytics.jsx";
 import CustomerDashboardPage from "./pages/customerView/dashboard/home.jsx";
 import ProfilePage from "./pages/customerView/profile/profile.jsx";
 import DiscoverPage from "./pages/customerView/discover/discover.jsx";
@@ -95,6 +99,10 @@ const App = () => {
         <Route path="/admin" element={<CheckAuth requireAuth requireAdmin><AdminLayout /></CheckAuth>}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route path="analytics" element={<AdminAnalyticsPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="payments" element={<AdminPaymentsPage />} />
+          <Route path="reports" element={<AdminReportsPage />} />
         </Route>
 
         <Route path="/user" element={<CheckAuth requireAuth><UserLayout /></CheckAuth>}>

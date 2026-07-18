@@ -9,6 +9,7 @@ import {
   LogOut,
   Wallet,
   Footprints,
+  BarChart3,
 } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -38,10 +39,22 @@ const adminSidebarMenuItems = [
     icon: <Footprints className="w-5 h-5" />,
   },
   {
+    id: "analytics",
+    label: "Analytics",
+    path: "/admin/analytics",
+    icon: <BarChart3 className="w-5 h-5" />,
+  },
+  {
     id: "payments",
     label: "Payments History",
     path: "/admin/payments",
     icon: <Wallet className="w-5 h-5" />,
+  },
+  {
+    id: "reports",
+    label: "Reports",
+    path: "/admin/reports",
+    icon: <BarChart3 className="w-5 h-5" />,
   },
   {
     id: "users",

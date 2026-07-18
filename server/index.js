@@ -11,6 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const matchingRoutes = require("./routes/matchingRoutes");
 const messagingRoutes = require("./routes/messagingRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 const app = express();
@@ -54,6 +55,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/matching", matchingRoutes);
 app.use("/api/messaging", messagingRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

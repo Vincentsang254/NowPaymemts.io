@@ -4,6 +4,7 @@ import userReducer from "./slices/userSlice";
 import paymentReducer from "./slices/paymentSlice";
 import matchingReducer from "./slices/matchingSlice";
 import messagingReducer from "./slices/messagingSlice";
+import adminReducer from "./slices/adminSlice";
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         payment: paymentReducer,
         matching: matchingReducer,
         messaging: messagingReducer,
+        admin: adminReducer,
     },
 });
 

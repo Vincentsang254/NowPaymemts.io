@@ -158,7 +158,16 @@ Admin Dashboard
 
 Status
 
-Pending
+✅ Completed
+
+Completed
+
+- Protected admin overview endpoint with summary metrics
+- Admin users list endpoint and user management screen
+- Admin payments history endpoint and payment screen
+- Admin reports endpoint and reports summary screen
+- Admin dashboard overview cards wired to live data
+- Sidebar navigation for admin dashboard, users, payments, and reports
 
 ---
 
