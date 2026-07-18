@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProfile } from "@/redux/slices/userSlice";
+import { fetchProfile, fetchUsers } from "@/redux/slices/userSlice";
 import { Heart, MessageCircle, Zap, TrendingUp, Users, Shield, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const CustomerDashboard = () => {
 	const dispatch = useDispatch();
 	const profile = useSelector((state) => state.user.profile);
+	const suggestedUsers = useSelector((state) => state.user.users);
 	const [stats] = useState({
 		likes: 24,
 		messages: 8,
@@ -17,6 +18,7 @@ const CustomerDashboard = () => {
 
 	useEffect(() => {
 		dispatch(fetchProfile());
+		dispatch(fetchUsers());
 	}, [dispatch]);
 
 	const StatCard = ({ icon: Icon, label, value, color }) => (
@@ -146,6 +148,30 @@ const CustomerDashboard = () => {
 							description="Get more visibility"
 							href="/user/payments"
 						/>
+					</div>
+				</div>
+
+				{/* Suggested Profiles */}
+				<div className="mb-8">
+					<h2 className="text-2xl font-bold text-gray-900 mb-4">Suggested Profiles</h2>
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+						{suggestedUsers.slice(0, 4).map((user) => (
+							<div key={user.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+								<img
+									src={user.profilePic || "/placeholder.png"}
+									alt={user.name}
+									className="w-full h-40 object-cover"
+								/>
+								<div className="p-4">
+									<h3 className="font-semibold text-gray-900">{user.name}</h3>
+									<p className="text-sm text-gray-600 mt-1">{user.location || "New here"}</p>
+									<p className="text-sm text-gray-500 mt-2 line-clamp-2">{user.bio || "Looking to connect"}</p>
+									<Link to={`/user/profile/${user.id}`} className="inline-flex mt-3 text-sm font-medium text-primary">
+										View profile
+									</Link>
+								</div>
+							</div>
+						))}
 					</div>
 				</div>
 

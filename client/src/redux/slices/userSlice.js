@@ -6,9 +6,12 @@ import { toast } from "react-toastify";
 const initialState = {
   profile: null,
   viewedProfile: null,
+  users: [],
   status: "idle",
   viewedProfileStatus: "idle",
+  usersStatus: "idle",
   error: null,
+  usersError: null,
 };
 
 export const fetchProfile = createAsyncThunk("user/fetchProfile", async (_, { rejectWithValue }) => {
@@ -18,6 +21,17 @@ export const fetchProfile = createAsyncThunk("user/fetchProfile", async (_, { re
     return response.data;
   } catch (error) {
     toast.error(error.response?.data?.message || "Failed to load profile", { position: "top-center" });
+    return rejectWithValue(error.response?.data || { message: error.message });
+  }
+});
+
+export const fetchUsers = createAsyncThunk("user/fetchUsers", async (_, { rejectWithValue }) => {
+  try {
+    const headers = setHeaders();
+    const response = await axios.get(`${url}/users/profile`, headers);
+    return response.data;
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Failed to load users", { position: "top-center" });
     return rejectWithValue(error.response?.data || { message: error.message });
   }
 });
@@ -103,11 +117,30 @@ const userSlice = createSlice({
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.status = "success";
-        state.profile = action.payload.data || null;
+        const payload = action.payload?.data;
+        if (Array.isArray(payload)) {
+          state.profile = payload[0] || null;
+        } else {
+          state.profile = payload || null;
+        }
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.payload?.message || action.error?.message;
+      });
+    builder
+      .addCase(fetchUsers.pending, (state) => {
+        state.usersStatus = "pending";
+        state.usersError = null;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.usersStatus = "success";
+        const payload = action.payload?.data;
+        state.users = Array.isArray(payload) ? payload : payload ? [payload] : [];
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.usersStatus = "rejected";
+        state.usersError = action.payload?.message || action.error?.message;
       });
     builder
       .addCase(fetchUserProfile.pending, (state) => {
@@ -116,7 +149,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.viewedProfileStatus = "success";
-        state.viewedProfile = action.payload.data || null;
+        state.viewedProfile = action.payload?.data || null;
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
         state.viewedProfileStatus = "rejected";

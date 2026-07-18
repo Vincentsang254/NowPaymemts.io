@@ -10,13 +10,34 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET || "764okYVYwP9WOp5iXMKS7Oxbr7c",
 });
 
+const { Op } = require("sequelize");
+
 const getProfile = async (req, res) => {
   try {
-    const user = await Users.findByPk(req.user.id, { attributes: { exclude: ["password"] } });
-    if (!user) return res.status(404).json({ success: false, message: "No User Found", data: null });
-    return res.status(200).json({ success: true, message: "Profile Retrieved Successfully", data: user });
+    const users = await Users.findAll({
+      where: {
+        id: {
+          [Op.ne]: req.user.id,
+        },
+      },
+      attributes: {
+        exclude: ["password"],
+      },
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Users retrieved successfully.",
+      data: users,
+    });
   } catch (error) {
-    return res.status(500).json({ success: false, message: "Failed to retrieve profile.", data: null, error: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve users.",
+      data: null,
+      error: error.message,
+    });
   }
 };
 
