@@ -171,4 +171,34 @@ Completed
 
 ---
 
+## Phase 8
+
+Growth, Safety, and Experience Improvements
+
+Tasks
+
+- Add push notifications for matches, messages, and likes
+- Improve profile discovery with smarter recommendation filters
+- Add in-app moderation and reporting for suspicious behavior
+- Introduce premium feature upgrades such as profile boosts and visibility enhancements
+- Add user onboarding tips and a guided setup flow for first-time users
+- Improve mobile UX with better responsive polish and touch-friendly interactions
+- Add real-time presence indicators and better call experience polish
+- Improve performance with caching, lazy loading, and image optimization
+- Add accessibility improvements for keyboard navigation and screen readers
+- Add analytics tracking for conversion, engagement, and retention
+
+Status
+
+⏳ Planned
+
+Suggested focus areas
+
+- Safety and trust: reporting, blocking, and moderation tools
+- Engagement: smarter recommendations, reminders, and re-engagement flows
+- Retention: onboarding, personalized suggestions, and premium value enhancements
+- Quality: faster loading, better mobile experience, and accessibility
+
+---
+
 Never start the next phase until the current one is completed unless instructed.
