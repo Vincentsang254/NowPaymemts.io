@@ -44,6 +44,8 @@ app.use(
 app.set("io", io);
 
 const db = require("./models");
+const jwt = require("jsonwebtoken");
+const { checkPremiumStatus } = require("./utils/checkPremiumStatus");
 
 app.get("/health", (req, res) => {
   res.status(200).json({ success: true, message: "Server is healthy.", data: null });
@@ -78,11 +80,41 @@ db.sequelize.sync().then(() => {
   io.on("connection", (socket) => {
     console.log("New user connected:", socket.id);
 
-    // User comes online
+    // Authenticate socket connection using token sent in handshake
+    (async () => {
+      try {
+        const tokenAuth = socket.handshake.auth?.token || socket.handshake.headers?.authorization || socket.handshake.query?.token;
+        const token = typeof tokenAuth === "string" && tokenAuth.startsWith("Bearer ") ? tokenAuth.slice(7) : tokenAuth;
+
+        if (!token) {
+          socket.emit("unauthorized", { message: "No token provided" });
+          socket.disconnect(true);
+          return;
+        }
+
+        const decoded = jwt.verify(token, "sangkiplaimportantkey");
+        const user = await db.Users.findByPk(decoded.id);
+        if (!user) {
+          socket.emit("unauthorized", { message: "Invalid token - user not found" });
+          socket.disconnect(true);
+          return;
+        }
+
+        socket.userId = user.id;
+        onlineUsers.set(user.id, socket.id);
+        // Broadcast user online status to all connected users
+        io.emit("user_status", { userId: user.id, status: "online" });
+      } catch (err) {
+        socket.emit("unauthorized", { message: "Invalid token" });
+        socket.disconnect(true);
+        return;
+      }
+    })();
+
+    // Backwards-compatible explicit online event (keeps behavior if client still emits it)
     socket.on("user_online", (userId) => {
       onlineUsers.set(userId, socket.id);
       socket.userId = userId;
-      // Broadcast user online status to all connected users
       io.emit("user_status", { userId, status: "online" });
     });
 
@@ -121,16 +153,54 @@ db.sequelize.sync().then(() => {
       }
     });
 
-    // Voice/Video call initiation
-    socket.on("call_initiate", (data) => {
-      const { recipientId, callType } = data; // callType: 'video' or 'voice'
-      const recipientSocketId = onlineUsers.get(recipientId);
-      if (recipientSocketId) {
-        io.to(recipientSocketId).emit("call_incoming", {
-          senderId: socket.userId,
-          callType,
-          callId: data.callId,
+    // Voice/Video call initiation - verify match and premium status server-side
+    socket.on("call_initiate", async (data) => {
+      try {
+        const { recipientId, callType, callId } = data;
+        const callerId = socket.userId;
+
+        if (!callerId) {
+          socket.emit("call_rejected", { callId, reason: "unauthenticated" });
+          return;
+        }
+
+        // Verify users are matched
+        const match = await db.Matches.findOne({
+          where: {
+            [db.Sequelize.Op.or]: [
+              { userId: callerId, matchedUserId: recipientId },
+              { userId: recipientId, matchedUserId: callerId },
+            ],
+            status: "accepted",
+          },
         });
+
+        if (!match) {
+          socket.emit("call_rejected", { callId, reason: "not_matched" });
+          return;
+        }
+
+        // For voice/video calls, check premium status
+        if (callType === "video" || callType === "voice") {
+          const isPremium = await checkPremiumStatus(callerId);
+          if (!isPremium) {
+            socket.emit("call_rejected", { callId, reason: "premium_required" });
+            return;
+          }
+        }
+
+        const recipientSocketId = onlineUsers.get(recipientId);
+        if (recipientSocketId) {
+          io.to(recipientSocketId).emit("call_incoming", {
+            senderId: callerId,
+            callType,
+            callId,
+          });
+        } else {
+          socket.emit("call_rejected", { callId, reason: "recipient_offline" });
+        }
+      } catch (error) {
+        socket.emit("call_rejected", { callId: data.callId, reason: "internal_error" });
       }
     });
 
