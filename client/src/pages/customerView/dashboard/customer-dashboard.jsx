@@ -139,29 +139,29 @@ const CustomerDashboard = () => {
 								{suggestedUsers?.length > 0 ? (
 									suggestedUsers.slice(0, 4).map((user) => (
 										<div key={user.id} className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm">
-										<img
-											src={user.profilePic || "/placeholder.png"}
-											alt={user.name}
-											className="h-40 w-full object-cover"
-										/>
-										<div className="p-4">
-											<h3 className="font-semibold text-slate-900">{user.name}</h3>
-											<p className="mt-1 text-sm text-slate-500">{user.location || "Nearby"}</p>
-											<p className="mt-3 text-sm leading-6 text-slate-600 line-clamp-3">{user.bio || "Bio not available."}</p>
-											<div className="mt-4 flex items-center justify-between gap-3">
-												<p className="text-xs uppercase tracking-[0.18em] text-slate-400">{user.age ? `${user.age} yrs` : "Age N/A"}</p>
-												<Link to={`/user/profile/${user.id}`} className="text-sm font-semibold text-primary">
-													View
-												</Link>
+											<img
+												src={user.profilePic || "/placeholder.png"}
+												alt={user.name}
+												className="h-40 w-full object-cover"
+											/>
+											<div className="p-4">
+												<h3 className="font-semibold text-slate-900">{user.name}</h3>
+												<p className="mt-1 text-sm text-slate-500">{user.location || "Nearby"}</p>
+												<p className="mt-3 text-sm leading-6 text-slate-600 line-clamp-3">{user.bio || "Bio not available."}</p>
+												<div className="mt-4 flex items-center justify-between gap-3">
+													<p className="text-xs uppercase tracking-[0.18em] text-slate-400">{user.age ? `${user.age} yrs` : "Age N/A"}</p>
+													<Link to={`/user/profile/${user.id}`} className="text-sm font-semibold text-primary">
+														View
+													</Link>
+												</div>
 											</div>
 										</div>
-									</div>
-								))
-								: (
-									<div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
-										No suggested profiles are available right now.
-									</div>
-								)}
+									))
+									: (
+										<div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
+											No suggested profiles are available right now.
+										</div>
+									)}
 							</div>
 						</section>
 					</div>
