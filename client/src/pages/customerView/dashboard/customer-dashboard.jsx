@@ -166,7 +166,10 @@ const CustomerDashboard = () => {
 										</Link>
 									))}
 								</div>
-							</section>							<div className="mb-5 flex items-center justify-between gap-4">
+							</section>
+
+						<section className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
+							<div className="mb-5 flex items-center justify-between gap-4">
 								<div>
 									<h2 className="text-xl font-semibold text-slate-900">Suggested Profiles</h2>
 									<p className="text-sm text-slate-500">Based on your current activity and matches.</p>
