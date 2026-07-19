@@ -20,13 +20,13 @@ const SidebarItem = ({ item, active, onNavigate }) => {
 		<Link
 			to={item.path}
 			onClick={onNavigate}
-			className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-				active 
-					? "bg-primary/10 text-primary border-l-4 border-primary" 
-					: "text-gray-700 hover:bg-gray-50 border-l-4 border-transparent"
+			className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all ${
+				active
+					? "border border-primary/20 bg-primary/10 text-primary shadow-sm"
+					: "border border-transparent text-slate-700 hover:bg-slate-50 hover:text-slate-900"
 			}`}
 		>
-			<Icon className="w-5 h-5" />
+			<Icon className="h-5 w-5" />
 			<span>{item.label}</span>
 		</Link>
 	);
@@ -46,25 +46,23 @@ const CustomerSidebar = ({ className = "w-72", open = false, setOpen = null }) =
 	};
 
 	return (
-		<aside className={`${className} ${open ? "block" : "hidden lg:block"} bg-gradient-to-b from-white to-gray-50 border-r border-gray-200 flex flex-col h-screen shadow-sm`}>
-			{/* Logo Section */}
-			<div className="p-6 border-b border-gray-200">
+		<aside className={`${className} ${open ? "block" : "hidden lg:block"} flex h-screen flex-col border-r border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm`}>
+			<div className="border-b border-slate-200 p-6">
 				<div className="mb-2 flex items-center justify-between">
 					<h3 className="text-xl font-bold text-primary">SparkMatch</h3>
 					{setOpen && (
 						<button
 							onClick={() => setOpen(false)}
-							className="lg:hidden text-sm text-gray-500 hover:text-gray-900"
+							className="text-sm text-slate-500 hover:text-slate-900 lg:hidden"
 						>
 							Close
 						</button>
 					)}
 				</div>
-				<p className="text-xs text-gray-500">Connect with meaningful people</p>
+				<p className="text-xs text-slate-500">Connect with meaningful people</p>
 			</div>
 
-			{/* Navigation */}
-			<nav className="flex-1 flex flex-col space-y-1 p-4 overflow-y-auto">
+			<nav className="flex-1 space-y-1 overflow-y-auto p-4">
 				{navItems.map((item) => (
 					<SidebarItem
 						key={item.id}
@@ -75,23 +73,24 @@ const CustomerSidebar = ({ className = "w-72", open = false, setOpen = null }) =
 				))}
 			</nav>
 
-			{/* Footer Section */}
-			<div className="p-4 border-t border-gray-200 space-y-2">
-				<Link 
-					to="/user/settings" 
-					onClick={handleNavigate}
-					className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
-				>
-					<Settings className="w-5 h-5" />
-					<span>Settings</span>
-				</Link>
-				<button 
-					onClick={handleLogout}
-					className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-600 hover:bg-red-50 transition-all"
-				>
-					<LogOut className="w-5 h-5" />
-					<span>Logout</span>
-				</button>
+			<div className="border-t border-slate-200 bg-white/80 p-4 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+				<div className="space-y-2">
+					<Link
+						to="/user/settings"
+						onClick={handleNavigate}
+						className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition-all hover:bg-slate-100"
+					>
+						<Settings className="h-5 w-5" />
+						<span>Settings</span>
+					</Link>
+					<button
+						onClick={handleLogout}
+						className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold text-red-600 transition-all hover:bg-red-50"
+					>
+						<LogOut className="h-5 w-5" />
+						<span>Logout</span>
+					</button>
+				</div>
 			</div>
 		</aside>
 	);
