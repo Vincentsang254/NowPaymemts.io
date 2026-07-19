@@ -4,11 +4,8 @@ import {
   ChartNoAxesCombined,
   LayoutDashboard,
   Home,
-  Image,
   ChevronRight,
-  LogOut,
   Wallet,
-  Footprints,
   BarChart3,
 } from "lucide-react";
 import { Fragment } from "react";
@@ -21,9 +18,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { logoutUser } from "@/redux/slices/authSlice";
-import { useDispatch } from "react-redux";
 
 const adminSidebarMenuItems = [
   {
@@ -31,12 +25,6 @@ const adminSidebarMenuItems = [
     label: "Dashboard",
     path: "/admin/dashboard",
     icon: <LayoutDashboard className="w-5 h-5" />,
-  },
-  {
-    id: "tips",
-    label: "Tips Management",
-    path: "/admin/tips",
-    icon: <Footprints className="w-5 h-5" />,
   },
   {
     id: "analytics",
@@ -61,18 +49,6 @@ const adminSidebarMenuItems = [
     label: "User Management",
     path: "/admin/users",
     icon: <BadgeCheck className="w-5 h-5" />,
-  },
-  {
-    id: "vips",
-    label: "VIP Management",
-    path: "/admin/vip",
-    icon: <Image className="w-5 h-5" />,
-  },
-  {
-    id: "media",
-    label: "Media Library",
-    path: "/admin/upload",
-    icon: <Image className="w-5 h-5" />,
   },
 ];
 
@@ -132,12 +108,6 @@ function MenuItems({ menuItems, setOpen, isMobile }) {
 
 function AdminSideBar({ open, setOpen }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/auth/login");
-  };
 
   return (
     <Fragment>
@@ -166,20 +136,6 @@ function AdminSideBar({ open, setOpen }) {
                 />
               </div>
             </div>
-
-            <div className="p-4 border-t">
-              <Button
-                variant="ghost"
-                className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50"
-                onClick={handleLogout}
-              >
-                <LogOut className="w-5 h-5" />
-                Log Out
-              </Button>
-              <p className="text-xs text-muted-foreground text-center mt-2">
-                v1.0.0
-              </p>
-            </div>
           </div>
         </SheetContent>
       </Sheet>
@@ -199,18 +155,6 @@ function AdminSideBar({ open, setOpen }) {
           <div className="pt-4 border-t">
             <MenuItems menuItems={bottomMenuItems} />
           </div>
-        </div>
-
-        <div className="p-4 border-t">
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-500"
-            onClick={handleLogout}
-          >
-            <LogOut className="w-5 h-5" />
-            Log Out
-          </Button>
-          {/* <p className="text-xs text-muted-foreground text-center mt-2">v1.0.0</p> */}
         </div>
       </aside>
     </Fragment>
